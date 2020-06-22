@@ -82,7 +82,7 @@
                 </div>
 
                 <div class="col-md-6 mb-3">
-                    <input type="text"  class="form-control" name = "InCreOrDes" id="InCreOrDes" onkeypress="return /[0-9]/i.test(event.key)" value = "0" required="">
+                    <input type="text"  class="form-control" name = "InCreOrDes" id="InCreOrDes" onkeypress="return /[0-9]/i.test(event.key)"  required="" value = "0" required="">
                 </div>
 
             </div>

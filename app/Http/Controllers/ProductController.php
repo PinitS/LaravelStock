@@ -184,19 +184,33 @@ class ProductController extends Controller
                         DB::table('product_tb')
                             ->where('ProductID' , $request->ProductID)
                             ->update([  
-                                        'ProductName' => $request->ProductName , 
+                                        'ProductName' => $pro->ProductName , 
                                         'Unit' => $request->Unit,                
                                         'CategoryID' => $request->CategoryID,
                                     ]);
     
                         $request->session()->flash('warning' , 'Successfully modified');
-                        return redirect('Category');
+                        return('KUY');
+                        return redirect('/search');
                     }
                     $request->session()->flash('error' , 'Product already exists');
-                    return redirect('Category');
+                    return('Hee');
+                    return redirect('/search');
                 }
     
             }
+
+            DB::table('product_tb')
+            ->where('ProductID' , $request->ProductID)
+            ->update([  'ProductName' => $request->ProductName , 
+                        'Unit' => $request->Unit,
+                        'CategoryID' => $request->CategoryID,               
+                        
+                        
+                    ]);
+
+            $request->session()->flash('message' , 'Successfully modified');
+            return redirect('/search');
         }
     }
 
