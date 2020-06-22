@@ -58,6 +58,7 @@
             <tr>
 
                 <th scope = "col">ProductNAME</th>
+                <th scope = "col">CategoryNAME</th>
                 <th scope = "col">TypeNAME</th>
                 <th scope = "col">Date</th>
                 <th scope = "col">InCreOrDes</th>
@@ -75,6 +76,7 @@
                 <tr>
     
                     <td>{{$report->ProductName}}</td>
+                    <td>{{$report->CategoryName}}</td>
                     <td>{{$report->TypeName}}</td>
                     <td>{{date('d-m-Y', strtotime($report->datetime))}}</td>
                     <td>{{$report->InCreOrDes}}</td>

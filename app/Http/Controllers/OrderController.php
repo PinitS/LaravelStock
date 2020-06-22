@@ -113,6 +113,7 @@ class OrderController extends Controller
         {
             $reports = DB::table('order_tb')
             ->join('product_tb' , 'order_tb.ProductID' , '=' , 'product_tb.ProductID')
+            ->join('category_tb' , 'product_tb.CategoryID' , '=' , 'category_tb.CategoryID')
             ->join('type_tb' , 'order_tb.TypeID' , '=' , 'type_tb.TypeID')
 
             //type 2
@@ -133,6 +134,7 @@ class OrderController extends Controller
         {
             $reports = DB::table('order_tb')
             ->join('product_tb' , 'order_tb.ProductID' , '=' , 'product_tb.ProductID')
+            ->join('category_tb' , 'product_tb.CategoryID' , '=' , 'category_tb.CategoryID')
             ->join('type_tb' , 'order_tb.TypeID' , '=' , 'type_tb.TypeID')
 
             //type 2
@@ -149,7 +151,6 @@ class OrderController extends Controller
             ->whereMonth('datetime', '=', $mount)
             ->get();
         }
-
         return view('Order.report', ['reports' => $reports ,'mount' => $mount , 'year' => $year , 'checked' => $checked]);
     }
 
