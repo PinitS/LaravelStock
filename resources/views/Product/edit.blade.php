@@ -4,11 +4,10 @@
 
 @section('content')
 
-    <form action = "{{ action('ProductController@update' , [$Product->ProductID] )}}" method = "post">
+    <form action = "{{ action('ProductController@update' , [$Product->id] )}}" method = "post">
         <input type="hidden" name = "_method" value = "PUT">
-        <input type="hidden"  class="form-control" name = "ProductID" id="ProductID" value = "{{$Product->ProductID}}" required="" >
+        <input type="hidden"  class="form-control" name = "id" id="id" value = "{{$Product->id}}" required="" >
         {{ csrf_field() }}
-
 
     <div class="row">
         <div class="col-md-4 order-md-1 container">
@@ -16,13 +15,13 @@
             <div class="row">
 
                 <div class="col-md-6 mb-3">
-                    <input type="radio" id="EX1" name="Checkfill" value="fillName" onchange="my_function('fillName')">
+                    <input type="radio" id="EX1" name="Checkfield" value="fieldName" onchange="my_function('fieldName')">
                     <label for="EX1">EditName</label><br>
                 </div>
 
                 <div class="col-md-6 mb-3">
 
-                    <input type="radio" id="EX3" name="Checkfill" value="fillQuantity"  onchange="my_function('fillQuantity')" checked>
+                    <input type="radio" id="EX3" name="Checkfield" value="fieldQuantity"  onchange="my_function('fieldQuantity')" checked>
                     <label for="EX3">EditValue</label><br>
 
                 </div>
@@ -39,25 +38,25 @@
             <div class="row">
 
                 <div class="col-md-4 mb-3">
-                    <input type="text"  class="form-control" name = "ProductName" id="ProductName" value = "{{$Product->ProductName}}" required="" disabled>
+                    <input type="text"  class="form-control" name = "productName" id="productName" value = "{{$Product->productName}}" required="" disabled>
                 </div>
 
                 <div class="col-md-4 mb-3">
-                    <select name="CategoryID" id="CategoryID" class="form-control" disabled>
+                    <select name="category_id" id="category_id" class="form-control" disabled>
                         @foreach($Categories as $Category)
                             <option
-                                @if($Product->CategoryID == $Category->CategoryID) 
+                                @if($Product->category_id == $Category->id) 
                                     selected="selected"
                                 @endif    
                                                 
-                                value="{{$Category->CategoryID}}">{{$Category->CategoryName}}
+                                value="{{$Category->id}}">{{$Category->categoryName}}
                             </option>
                         @endforeach
                     </select>
                 </div>
 
                 <div class="col-md-4 mb-3">
-                    <input type="text"  class="form-control" name = "Unit" id="Unit" value = "{{$Product->Unit}}" required="" disabled>
+                    <input type="text"  class="form-control" name = "unit" id="unit" value = "{{$Product->unit}}" required="" disabled>
                 </div>
 
             </div>
@@ -104,15 +103,15 @@
     <script>
             function my_function(val)
             {
-                if(val == "fillName")
+                if(val == "fieldName")
                 {
                     document.getElementById("InCreOrDes").disabled = true;
                     document.getElementById("Increase").disabled = true;
                     document.getElementById("decrease").disabled = true;
 
-                    document.getElementById("ProductName").disabled = false;
-                    document.getElementById("CategoryID").disabled = false;
-                    document.getElementById("Unit").disabled = false;
+                    document.getElementById("productName").disabled = false;
+                    document.getElementById("category_id").disabled = false;
+                    document.getElementById("unit").disabled = false;
 
                 }
                 else
@@ -121,9 +120,9 @@
                     document.getElementById("Increase").disabled = false;
                     document.getElementById("decrease").disabled = false;
 
-                    document.getElementById("ProductName").disabled = true;
-                    document.getElementById("CategoryID").disabled = true;
-                    document.getElementById("Unit").disabled = true;
+                    document.getElementById("productName").disabled = true;
+                    document.getElementById("category_id").disabled = true;
+                    document.getElementById("unit").disabled = true;
 
                 }
             }

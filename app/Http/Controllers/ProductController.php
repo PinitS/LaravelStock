@@ -27,18 +27,20 @@ class ProductController extends Controller
      */
     public function create()
     {
-        $Categories = DB::table('category_tb')->get();
+        $Categories = Category::all();
         return view('Product.create', ['Categories' => $Categories]);
     }
 
     public function search(Request $request)
     {
         $search = $request->get('SearchProductName');
-        $Products = DB::table('product_tb')
-                    ->join('category_tb' , 'product_tb.CategoryID' , '=' , 'category_tb.CategoryID')
-                    ->where('product_tb.ProductName' , 'like' , '%' .$search.'%')
-                    ->orderByRaw('category_tb.CategoryID ASC , product_tb.ProductName ASC')
-                    ->get();
+
+        $Products = Product::with('category')
+                            ->where('productName' , 'like' , '%' .$search.'%')
+                            ->orderby('id' ,'asc')
+                            ->get()
+                            ->sortBy('category.id');
+
         return view('Product.search', ['Products' => $Products]);
     }
 
@@ -50,15 +52,15 @@ class ProductController extends Controller
      */
     public function store(Request $request)
     {
-        $Categories = DB::table('category_tb')->get();
+        $Categories = Category::all();
 
-        if($request->categoryid > 0)
+        if($request->category_id > 0)
         {
-            $Products = DB::table('product_tb')->get();
+            $Products = Product::all();
 
             foreach($Products as $Product)
             {
-                if($Product->ProductName === $request->Product)
+                if($Product->productName === $request->productName)
                 {
                     $request->session()->flash('error' , 'Product already exists');
                     return redirect('Category');
@@ -66,26 +68,23 @@ class ProductController extends Controller
 
             }
 
-            DB::table('product_tb')
-                ->insert([  
-                            'ProductName'=> $request->Product,
-                            'CategoryID'=> $request->categoryid,
-                            'Unit'=> $request->Unit,
-                            'Quantity'=> $request->Quantity
+            Product::create([
+                                'productName'=> $request->productName,
+                                'category_id'=> $request->category_id,
+                                'unit'=> $request->unit,
+                                'quantity'=> $request->quantity
+                            ]);
+
+            $addOrder = Product::where('productName' , $request->productName)->first();
+
+            Order::create([
+                                'product_id'=> $addOrder->id,
+                                'type_id'=> 1,
+                                'category_id'=> $request->category_id,
+                                'inCreOrDes'=> $request->quantity,
+                                'reportQuantity'=> $request->quantity,
                         ]);
 
-            $addOrder = DB::table('product_tb')
-                        ->where('ProductName' , $request->Product)->first();
-
-
-            DB::table('order_tb')
-                ->insert([  
-                            'ProductID'=> $addOrder->ProductID,
-                            'datetime'=> Carbon::now(),
-                            'TypeID'=> 1,
-                            'InCreOrDes'=> $request->Quantity,
-                            'ReportQuantity'=> $request->Quantity
-                        ]);
 
 
             $request->session()->flash('message' , 'Created Successfully');
@@ -116,11 +115,9 @@ class ProductController extends Controller
      */
     public function edit($product)
     {
-        $Product = DB::table('product_tb')
-                ->where('ProductID' , $product)->first();
 
-        $Categories = DB::table('category_tb')
-                ->get();
+        $Product = Product::where('id' , $product)->first();
+        $Categories = Category::all();        
         
         return view('Product.edit', ['Product' => $Product , 'Categories' => $Categories]);
     }
@@ -134,37 +131,36 @@ class ProductController extends Controller
      */
     public function update(Request $request, Product $product)
     {
-        $reportQua = DB::table('product_tb')
-                    ->where('ProductID' , $request->ProductID)->first();
+        ////////////////////////////////////////////////////////////////////////////////////////////////////////
+        // $reportQua = DB::table('product_tb')
+        //             ->where('id' , $request->id)->first();
 
+        $reportQua = Product::where('id' , $request->id)->first();
         $ValReportQ = '';
-
-        if($request->Checkfill == 'fillQuantity')
+        
+        if($request->Checkfield == 'fieldQuantity')
         {
             if($request->Change == 1)
             {
-                DB::table('product_tb')
-                    ->where('ProductID' , $request->ProductID)
-                    ->increment('Quantity', $request->InCreOrDes);
-                    $ValReportQ = ($reportQua->Quantity)+($request->InCreOrDes);
+                Product::where('id' , $request->id)
+                        ->increment('quantity', $request->InCreOrDes);
+                $ValReportQ = ($reportQua->quantity)+($request->InCreOrDes);
 
             }
             else
             {
-                DB::table('product_tb')
-                    ->where('ProductID' , $request->ProductID)
-                    ->decrement('Quantity', $request->InCreOrDes);
-                    $ValReportQ = ($reportQua->Quantity)-($request->InCreOrDes);
+                Product::where('id' , $request->id)
+                        ->decrement('quantity', $request->InCreOrDes);
+                $ValReportQ = ($reportQua->quantity)-($request->InCreOrDes);
 
             }
 
-            DB::table('order_tb')
-                ->insert([  
-                            'ProductID'=> $request->ProductID,
-                            'datetime'=> Carbon::now(),
-                            'TypeID'=> $request->Change,
-                            'InCreOrDes'=> $request->InCreOrDes,
-                            'ReportQuantity'=> $ValReportQ
+            Order::create([
+                            'product_id'=> $request->id,
+                            'type_id'=> $request->Change,
+                            'category_id'=> $reportQua->category_id,
+                            'inCreOrDes'=> $request->InCreOrDes,
+                            'reportQuantity'=> $ValReportQ
                         ]);
 
             $request->session()->flash('message' , 'Updated Quantity Successfully');
@@ -174,44 +170,41 @@ class ProductController extends Controller
 
         else
         {
-            $Product = DB::table('product_tb')->get();
+            $Product = Product::all();
             foreach ($Product as $pro)
             {
-                if($pro->ProductName === $request->ProductName)
+                if($pro->productName === $request->productName)
                 {
-                    if($request->ProductID == $pro->ProductID)
+                    if($request->id == $pro->id)
                     {
-                        DB::table('product_tb')
-                            ->where('ProductID' , $request->ProductID)
-                            ->update([  
-                                        'ProductName' => $pro->ProductName , 
-                                        'Unit' => $request->Unit,                
-                                        'CategoryID' => $request->CategoryID,
-                                    ]);
+                        Product::where('id' , $request->id)
+                                ->update([  
+                                            'productName' => $pro->productName , 
+                                            'unit' => $request->unit,                
+                                            'category_id' => $request->category_id,
+                                        ]);
     
                         $request->session()->flash('warning' , 'Successfully modified');
-                        return('KUY');
                         return redirect('/search');
                     }
                     $request->session()->flash('error' , 'Product already exists');
-                    return('Hee');
                     return redirect('/search');
                 }
     
             }
 
-            DB::table('product_tb')
-            ->where('ProductID' , $request->ProductID)
-            ->update([  'ProductName' => $request->ProductName , 
-                        'Unit' => $request->Unit,
-                        'CategoryID' => $request->CategoryID,               
-                        
-                        
-                    ]);
+
+            Product::where('id' , $request->id)
+                    ->update([  
+                                'productName' => $request->productName , 
+                                'unit' => $request->unit,
+                                'category_id' => $request->category_id              
+                            ]);
 
             $request->session()->flash('message' , 'Successfully modified');
             return redirect('/search');
         }
+        ////////////////////////////////////////////////////////////////////////////////////////////////////////
     }
 
     /**

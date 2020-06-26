@@ -27,71 +27,60 @@ class OrderController extends Controller
     {
         $now = Carbon::now();
 
-        $ChartMaxis = DB::table('order_tb')
-            ->join('product_tb' , 'product_tb.ProductID' , '=' , 'order_tb.ProductID')
-            ->join('category_tb' , 'category_tb.CategoryID' , '=' , 'product_tb.CategoryID')
-            ->select(
-                        'ProductName' , 'CategoryName' , 'datetime', DB::raw('Sum(order_tb.InCreOrDes) AS SumInCreOrDes') , DB::raw('Count(category_tb.CategoryID) AS CountCategoryID')
-                    )
-
-            ->where('TypeID' , 2)
-            ->whereMonth('datetime', '=', $now->month)
-            ->whereYear('datetime', '=', $now->year)
-            ->groupBy('order_tb.ProductID' , 'order_tb.TypeID')
-            ->orderBy("SumInCreOrDes" , "DESC")
-            ->limit(5)
-            ->get();
+        $ChartMaxis = Order::with('category')
+                            ->with('product')
+                            ->select(
+                                        '*', DB::raw('Sum(InCreOrDes) AS SumInCreOrDes')
+                                    )
+                            ->where('type_id' , 2)
+                            ->whereMonth('created_at', $now->month)
+                            ->whereYear('created_at', $now->year)
+                            ->groupBy('product_id' , 'type_id')
+                            ->orderBy("SumInCreOrDes" , "DESC")
+                            ->limit(5)
+                            ->get();
 
 
-        $ChartMinis = DB::table('order_tb')
-            ->join('product_tb' , 'product_tb.ProductID' , '=' , 'order_tb.ProductID')
-            ->join('category_tb' , 'category_tb.CategoryID' , '=' , 'product_tb.CategoryID')
-            ->select(
-                        'ProductName' , 'CategoryName' , 'datetime', DB::raw('Sum(order_tb.InCreOrDes) AS SumInCreOrDes') , DB::raw('Count(category_tb.CategoryID) AS CountCategoryID')
-                    )
-
-            ->where('TypeID' , 2)
-            ->whereMonth('datetime', '=', $now->month)
-            ->whereYear('datetime', '=', $now->year)
-            ->groupBy('order_tb.ProductID' , 'order_tb.TypeID')
-            ->orderBy("SumInCreOrDes" , "ASC")
-            ->limit(5)
-            ->get();
+        $ChartMinis = Order::with('category')
+                            ->with('product')
+                            ->select(
+                                        '*', DB::raw('Sum(InCreOrDes) AS SumInCreOrDes')
+                                    )
+                            ->where('type_id' , 2)
+                            ->whereMonth('created_at', $now->month)
+                            ->whereYear('created_at', $now->year)
+                            ->groupBy('product_id' , 'type_id')
+                            ->orderBy("SumInCreOrDes" , "ASC")
+                            ->limit(5)
+                            ->get();
 
 
-        $ChartCategory = DB::table('order_tb')
-            ->join('product_tb' , 'product_tb.ProductID' , '=' , 'order_tb.ProductID')
-            ->join('category_tb' , 'category_tb.CategoryID' , '=' , 'product_tb.CategoryID')
-            ->select(
-                        '*' , 'category_tb.CategoryName' , DB::raw('COUNT(order_tb.ProductID) AS CountPID')
-                    )
-            ->where('TypeID' , 2)
-            ->whereMonth('datetime', '=', $now->month)
-            ->whereYear('datetime', '=', $now->year)
-            ->groupBy('category_tb.CategoryID')
-            ->limit(5)
-            ->get();
+        $ChartCategory = Order::with('category')
+                                    ->with('product')
+                                    ->select(
+                                                '*' , DB::raw('COUNT(product_id) AS CountPID')
+                                            )
+                                    ->where('type_id' , 2)
+                                    ->whereMonth('created_at', $now->month)
+                                    ->whereYear('created_at', $now->year)
+                                    ->groupBy('category_id')
+                                    ->limit(5)
+                                    ->get();
 
-            //return $ChartCategory;
+        $AllCat = Order::distinct()
+                ->whereMonth('created_at', $now->month)
+                ->whereYear('created_at', $now->year)
+                ->count('category_id');
 
-        $AllCat = DB::table('order_tb')
-            ->join('product_tb' , 'product_tb.ProductID' , '=' , 'order_tb.ProductID')
-            ->distinct()
-            ->whereMonth('datetime', '=', $now->month)
-            ->whereYear('datetime', '=', $now->year)
-            ->count('product_tb.CategoryID');
+        $AllPro = Order::distinct()
+                ->whereMonth('created_at', $now->month)
+                ->whereYear('created_at', $now->year)
+                ->count('product_id');
 
-        $AllOrder = DB::table('order_tb')
-            ->distinct()
-            ->whereMonth('datetime', '=', $now->month)
-            ->whereYear('datetime', '=', $now->year)
-            ->count('order_tb.OrderID');
-
-        $AllPro = DB::table('order_tb')
-            ->distinct()
-            ->whereMonth('datetime', '=', $now->month)
-            ->whereYear('datetime', '=', $now->year)
-            ->count('order_tb.ProductID');
+        $AllOrder = Order::distinct()
+                ->whereMonth('created_at', $now->month)
+                ->whereYear('created_at', $now->year)
+                ->count('id');
 
         return view('Order.dashboard' , 
                 [
@@ -111,45 +100,23 @@ class OrderController extends Controller
         $checked = $request->get('checkbox');
         if($checked == 1)
         {
-            $reports = DB::table('order_tb')
-            ->join('product_tb' , 'order_tb.ProductID' , '=' , 'product_tb.ProductID')
-            ->join('category_tb' , 'product_tb.CategoryID' , '=' , 'category_tb.CategoryID')
-            ->join('type_tb' , 'order_tb.TypeID' , '=' , 'type_tb.TypeID')
-
-            //type 2
-            // ->select([
-            //             '*' ,
-            //             DB::raw('Sum(product_tb.Quantity) as SumQuantity')
-            //         ])
-
-            // ->groupBy('product_tb.ProductID','type_tb.TypeID')
-            // ->orderByRaw("product_tb.ProductID ASC , type_tb.TypeID ASC")
-
-            ->orderByRaw("product_tb.ProductID ASC , order_tb.OrderID ASC")
-            ->whereYear('datetime', '=', $year)
-            ->get();
+            $reports = Order::with('product')
+                            ->with('category')
+                            ->whereYear('created_at', $year)
+                            ->orderBy('id', 'asc')
+                            ->get()
+                            ->sortBy('product.id');
         }
-
+        //->orderByRaw("product_tb.ProductID ASC , order_tb.OrderID ASC")
         else
         {
-            $reports = DB::table('order_tb')
-            ->join('product_tb' , 'order_tb.ProductID' , '=' , 'product_tb.ProductID')
-            ->join('category_tb' , 'product_tb.CategoryID' , '=' , 'category_tb.CategoryID')
-            ->join('type_tb' , 'order_tb.TypeID' , '=' , 'type_tb.TypeID')
-
-            //type 2
-            // ->select([
-            //             '*' ,
-            //             DB::raw('Sum(product_tb.Quantity) as SumQuantity')
-            //         ])
-
-            // ->groupBy('product_tb.ProductID','type_tb.TypeID')
-            // ->orderByRaw("product_tb.ProductID ASC , type_tb.TypeID ASC")
-
-            ->orderByRaw("product_tb.ProductID ASC , order_tb.OrderID ASC")
-            ->whereYear('datetime', '=', $year)
-            ->whereMonth('datetime', '=', $mount)
-            ->get();
+            $reports = Order::with('product')
+                            ->with('category')
+                            ->whereYear('created_at', $year)
+                            ->whereMonth('created_at', $mount)
+                            ->orderBy('id', 'asc')
+                            ->get()
+                            ->sortBy('product.id');
         }
         return view('Order.report', ['reports' => $reports ,'mount' => $mount , 'year' => $year , 'checked' => $checked]);
     }

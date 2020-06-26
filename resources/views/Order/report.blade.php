@@ -75,12 +75,12 @@
 
                 <tr>
     
-                    <td>{{$report->ProductName}}</td>
-                    <td>{{$report->CategoryName}}</td>
-                    <td>{{$report->TypeName}}</td>
-                    <td>{{date('d-m-Y', strtotime($report->datetime))}}</td>
-                    <td>{{$report->InCreOrDes}}</td>
-                    <td>{{$report->ReportQuantity}}</td>
+                    <td>{{$report->product->productName}}</td>
+                    <td>{{$report->category->categoryName}}</td>
+                    <td>{{$report->type_id}}</td>
+                    <td>{{date('d-m-Y', strtotime($report->created_at))}}</td>
+                    <td>{{$report->inCreOrDes}}</td>
+                    <td>{{$report->reportQuantity}}</td>
 
                 </tr>
 

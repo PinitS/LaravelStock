@@ -16,16 +16,10 @@ class CategoryController extends Controller
      */
     public function index()
     {
-        $Categories = DB::table('product_tb')
-        ->Join('category_tb' , 'product_tb.CategoryID' , '=' , 'category_tb.CategoryID')
-        ->select([
-                    '*' ,
-                    DB::raw('Count(product_tb.Quantity) as CountCat')
-                ])
-        ->groupBy(DB::raw("category_tb.CategoryID"))
-        ->orderBy('category_tb.CategoryID')
-        ->get();
+
+        $Categories = Category::withCount('product')->get();
         return view('Category.index', ['Categories' => $Categories]);
+
     }
 
     /**
@@ -46,22 +40,21 @@ class CategoryController extends Controller
      */
     public function store(Request $request)
     {
-
-        $Categories = DB::table('category_tb')->get();
+        $Categories = Category::all();
 
         foreach($Categories as $Category)
         {
-            if($Category->CategoryName === $request->Category)
+            if($Category->categoryName === $request->Category)
             {
                 $request->session()->flash('error' , 'Category already exists');
                 return redirect('Category');
             }
         }
 
-        DB::table('category_tb')
-                    ->insert([  'CategoryName' => $request->Category ,                 
-                                'Description' => $request->Description 
-                            ]);
+        $Category = Category::create([
+                                        'categoryName'=> $request->Category,
+                                        'description'=> $request->Description
+                                    ]);
             
         $request->session()->flash('message' , 'Created Successfully');
         return redirect('Category');
@@ -76,10 +69,13 @@ class CategoryController extends Controller
      */
     public function show($category)
     {
-        $ProductCategory = DB::table('product_tb')
-                    ->Join('category_tb' , 'product_tb.CategoryID' , '=' , 'category_tb.CategoryID')
-                    ->where('product_tb.CategoryID' , $category)
-                    ->get();
+
+        // $ProductCategory = DB::table('product_tb')
+        //             ->Join('category_tb' , 'product_tb.CategoryID' , '=' , 'category_tb.CategoryID')
+        //             ->where('product_tb.CategoryID' , $category)
+        //             ->get();
+
+
         return view('Category.show', ['ProductCategory' => $ProductCategory]);
 
         //
@@ -93,8 +89,7 @@ class CategoryController extends Controller
      */
     public function edit($category)
     {
-        $Category = DB::table('category_tb')
-                    ->where('CategoryID' , $category)->first();
+        $Category = Category::where('id' , $category)->first();
         return view('Category.edit', ['Category' => $Category]);
     }
 
@@ -107,21 +102,19 @@ class CategoryController extends Controller
      */
     public function update(Request $request, $category)
     {
-        $Categories = DB::table('category_tb')
-        ->get();
+        $Categories = Category::all();
 
         foreach($Categories as $Cat)
         {
-            if($Cat->CategoryName === $request->CategoryName)
+            if($Cat->categoryName === $request->categoryName)
             {
-                if($request->CategoryID == $Cat->CategoryID)
+                if($request->id == $Cat->id)
                 {
-                    DB::table('category_tb')
-                        ->where('CategoryID' , $request->CategoryID)
-                        ->update([  
-                                    'CategoryName' => $Cat->CategoryName ,                 
-                                    'Description' => $request->Description 
-                                ]);
+                    Category::where('id' , $request->id)
+                            ->update([  
+                                        'categoryName' => $Cat->categoryName ,                 
+                                        'Description' => $request->description 
+                                    ]);
 
                     $request->session()->flash('warning' , 'Successfully modified Description');
                     return redirect('Category');
@@ -130,12 +123,12 @@ class CategoryController extends Controller
                 return redirect('Category');
             }
         }
-        DB::table('category_tb')
-            ->where('CategoryID' , $request->CategoryID)
-            ->update([  
-                        'CategoryName' => $request->CategoryName ,                 
-                        'Description' => $request->Description 
-                    ]);
+        
+        Category::where('id' , $request->id)
+                ->update([  
+                            'categoryName' => $request->categoryName ,                 
+                            'Description' => $request->description 
+                        ]);
 
         $request->session()->flash('message' , 'Successfully modified');
         return redirect('Category');

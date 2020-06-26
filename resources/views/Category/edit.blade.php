@@ -5,9 +5,9 @@
 
 @section('content')
 
-<div class = "container mt-5 pt-5 text-center">
+
         <hr>
-        <form action = "{{ action('CategoryController@update' , [$Category->CategoryID] )}}" method = "post">
+        <form action = "{{ action('CategoryController@update' , [$Category->id] )}}" method = "post">
             <input type="hidden" name = "_method" value = "PUT">
             {{ csrf_field() }}
 
@@ -25,15 +25,15 @@
                 <tbody>
                         <tr>
                             <td>
-                                <input type="hidden"  class="form-control" name = "CategoryID" id="CategoryID" value = "{{$Category->CategoryID}}" required="">
+                                <input type="hidden"  class="form-control" name = "id" id="id" value = "{{$Category->id}}" required="">
                                 <div class = "my-2">
-                                    <input type="text"  class="form-control" name = "CategoryName" id="CategoryName" value = "{{$Category->CategoryName}}" required="">
+                                    <input type="text"  class="form-control" name = "categoryName" id="categoryName" value = "{{$Category->categoryName}}" required="">
                                 </div>
                             </td>
                             
                             <td>
                                 <div class = "my-2">
-                                    <input type="text"  class="form-control" name = "Description" id="Description" value = "{{$Category->Description}}" required="">
+                                    <input type="text"  class="form-control" name = "description" id="description" value = "{{$Category->description}}" required="">
                                 </div>
                             </td>
 
@@ -48,5 +48,5 @@
             </table>
 
         </form>
-</div>
+
 @endsection

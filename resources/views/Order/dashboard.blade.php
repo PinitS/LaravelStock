@@ -14,7 +14,7 @@
     {
         
         $cntChartMaxi++;
-        $ChartMaxiData .= "['{$ChartMaxi->ProductName}',{$ChartMaxi->SumInCreOrDes},'{$colorChartMaxi[$cntChartMaxi-1]}','{$ChartMaxi->CategoryName}'] ,";
+        $ChartMaxiData .= "['{$ChartMaxi->product->productName}',{$ChartMaxi->SumInCreOrDes},'{$colorChartMaxi[$cntChartMaxi-1]}','{$ChartMaxi->category->categoryName}'] ,";
         
     }
 
@@ -22,14 +22,14 @@
     {
         
         $cntChartMini++;
-        $ChartMiniData .= "['{$ChartMini->ProductName}',{$ChartMini->SumInCreOrDes},'{$colorChartMini[$cntChartMini-1]}','{$ChartMini->CategoryName}'] ,";
+        $ChartMiniData .= "['{$ChartMini->product->productName}',{$ChartMini->SumInCreOrDes},'{$colorChartMini[$cntChartMini-1]}','{$ChartMini->category->categoryName}'] ,";
         
     }
 
     foreach($ChartCategory as $ChartCat)
     {
 
-        $ChartCatData .= "['{$ChartCat->CategoryName}' , {$ChartCat->CountPID}] ,";
+        $ChartCatData .= "['{$ChartCat->category->categoryName}' , {$ChartCat->CountPID}] ,";
         
     }
 

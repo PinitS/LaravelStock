@@ -38,10 +38,10 @@
                     <tr>
                         <td>
                             <div class = "my-2">
-                                <select name="categoryid" id="categoryid" class="form-control">
+                                <select name="category_id" id="category_id" class="form-control">
                                         <option value="0">==All Categories==</option>
                                         @foreach($Categories as $Category)
-                                            <option value="{{$Category->CategoryID}}">{{$Category->CategoryName}}</option>
+                                            <option value="{{$Category->id}}">{{$Category->categoryName}}</option>
                                         @endforeach
                                 </select>
                             </div>
@@ -49,19 +49,19 @@
 
                         <td>
                             <div class = "my-2">
-                                <input type="text"  class="form-control" name = "Product" id="Product" placeholder="ชื่อสินค้า" required="">
+                                <input type="text"  class="form-control" name = "productName" id="productName" placeholder="ชื่อสินค้า" required="">
                             </div>
                         </td>
                         
                         <td>
                             <div class = "my-2">
-                                <input type="text"  class="form-control" name = "Unit" id="Unit" placeholder="รายละเอียดต่างๆ" value="-">
+                                <input type="text"  class="form-control" name = "unit" id="unit" placeholder="รายละเอียดต่างๆ" value="-">
                             </div>
                         </td>
 
                         <td>
                             <div class = "my-2">
-                                <input type="text"  class="form-control" name = "Quantity" id="Quantity" onkeypress="return /[0-9]/i.test(event.key)" value = "" required="">
+                                <input type="text"  class="form-control" name = "quantity" id="quantity" onkeypress="return /[0-9]/i.test(event.key)" value = "" required="">
                             </div>
                         </td>
 

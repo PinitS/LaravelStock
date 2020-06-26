@@ -53,14 +53,14 @@
 
                 <tr>
 
-                    <td>{{$Product->ProductName}}</td>
-                    <td>{{$Product->CategoryName}}</td>
-                    <td>{{$Product->Unit}}</td>
-                    <td>{{$Product->Quantity}}</td>
+                    <td>{{$Product->productName}}</td>
+                    <td>{{$Product->category->categoryName}}</td>
+                    <td>{{$Product->unit}}</td>
+                    <td>{{$Product->quantity}}</td>
 
 
                     <td>
-                        <a href="{{ action('ProductController@edit', [$Product->ProductID]) }}">
+                        <a href="{{ action('ProductController@edit', [$Product->id]) }}">
                             <button type = "button" class = "btn btn-warning">Edit</button>
                         </a>
                     </td>

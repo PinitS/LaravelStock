@@ -34,14 +34,14 @@
 
                 <tr>
                     
-                    <td><a href="{{ action('CategoryController@show', [$Category->CategoryID]) }}">{{$Category->CategoryName}}</a></td>
+                    <td><a href="{{ action('CategoryController@show', [$Category->id]) }}">{{$Category->categoryName}}</a></td>
 
-                    <td>{{$Category->Description}}</td>
+                    <td>{{$Category->description}}</td>
 
-                    <td>{{$Category->CountCat}}</td>
+                    <td>{{$Category->product_count}}</td>
 
                     <td>
-                        <a href="{{ action('CategoryController@edit', [$Category->CategoryID]) }}">
+                        <a href="{{ action('CategoryController@edit', [$Category->id]) }}">
                                 <button type = "button" class = "btn btn-warning">Edit</button>
                         </a>
                     </td>
