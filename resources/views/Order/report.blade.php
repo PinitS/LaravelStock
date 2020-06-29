@@ -77,7 +77,7 @@
     
                     <td>{{$report->product->productName}}</td>
                     <td>{{$report->category->categoryName}}</td>
-                    <td>{{$report->type_id}}</td>
+                    <td>{{$report->type->typeName}}</td>
                     <td>{{date('d-m-Y', strtotime($report->created_at))}}</td>
                     <td>{{$report->inCreOrDes}}</td>
                     <td>{{$report->reportQuantity}}</td>

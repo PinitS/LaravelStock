@@ -56,28 +56,31 @@ class OrderController extends Controller
 
 
         $ChartCategory = Order::with('category')
-                                    ->with('product')
-                                    ->select(
-                                                '*' , DB::raw('COUNT(product_id) AS CountPID')
-                                            )
-                                    ->where('type_id' , 2)
-                                    ->whereMonth('created_at', $now->month)
-                                    ->whereYear('created_at', $now->year)
-                                    ->groupBy('category_id')
-                                    ->limit(5)
-                                    ->get();
+                                ->with('product')
+                                ->select(
+                                            '*' , DB::raw('COUNT(product_id) AS CountPID')
+                                        )
+                                ->where('type_id' , 2)
+                                ->whereMonth('created_at', $now->month)
+                                ->whereYear('created_at', $now->year)
+                                ->groupBy('category_id')
+                                ->limit(5)
+                                ->get();
 
         $AllCat = Order::distinct()
+                ->where('type_id' , 2)
                 ->whereMonth('created_at', $now->month)
                 ->whereYear('created_at', $now->year)
                 ->count('category_id');
 
         $AllPro = Order::distinct()
+                ->where('type_id' , 2)
                 ->whereMonth('created_at', $now->month)
                 ->whereYear('created_at', $now->year)
                 ->count('product_id');
 
         $AllOrder = Order::distinct()
+                ->where('type_id' , 2)
                 ->whereMonth('created_at', $now->month)
                 ->whereYear('created_at', $now->year)
                 ->count('id');
@@ -102,6 +105,7 @@ class OrderController extends Controller
         {
             $reports = Order::with('product')
                             ->with('category')
+                            ->with('type')
                             ->whereYear('created_at', $year)
                             ->orderBy('id', 'asc')
                             ->get()
@@ -112,6 +116,7 @@ class OrderController extends Controller
         {
             $reports = Order::with('product')
                             ->with('category')
+                            ->with('type')
                             ->whereYear('created_at', $year)
                             ->whereMonth('created_at', $mount)
                             ->orderBy('id', 'asc')
