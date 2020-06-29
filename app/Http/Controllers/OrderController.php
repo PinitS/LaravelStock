@@ -123,6 +123,7 @@ class OrderController extends Controller
                             ->get()
                             ->sortBy('product.id');
         }
+        return $reports;
         return view('Order.report', ['reports' => $reports ,'mount' => $mount , 'year' => $year , 'checked' => $checked]);
     }
 
