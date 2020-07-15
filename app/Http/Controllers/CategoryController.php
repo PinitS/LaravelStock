@@ -69,12 +69,9 @@ class CategoryController extends Controller
      */
     public function show($category)
     {
-
-        // $ProductCategory = DB::table('product_tb')
-        //             ->Join('category_tb' , 'product_tb.CategoryID' , '=' , 'category_tb.CategoryID')
-        //             ->where('product_tb.CategoryID' , $category)
-        //             ->get();
-
+        $ProductCategory = Product::with('category')
+                                    ->where('category_id' , $category)
+                                    ->get();
 
         return view('Category.show', ['ProductCategory' => $ProductCategory]);
 

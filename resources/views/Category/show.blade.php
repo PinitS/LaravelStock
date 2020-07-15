@@ -34,16 +34,16 @@
             @foreach($ProductCategory as $ProductCat)
                 <tr>
                         
-                    <td>{{$ProductCat->ProductName}}</td>
+                    <td>{{$ProductCat->productName}}</td>
 
-                    <td>{{$ProductCat->CategoryName}}</td>
+                    <td>{{$ProductCat->category->categoryName}}</td>
 
-                    <td>{{$ProductCat->Unit}}</td>
+                    <td>{{$ProductCat->unit}}</td>
 
-                    <td>{{$ProductCat->Quantity}}</td>
+                    <td>{{$ProductCat->quantity}}</td>
 
                     <td>
-                        <a href="{{ action('ProductController@edit', [$ProductCat->ProductID]) }}">
+                        <a href="{{ action('ProductController@edit', [$ProductCat->id]) }}">
                             <button type = "button" class = "btn btn-warning">Edit</button>
                         </a>
                     </td>
