@@ -25,8 +25,8 @@
                 <tr>
                     <th scope = "col">ProductName</th>
                     <th scope = "col">CategoryName</th>
+                    <th scope = "col">Type</th>
                     <th scope = "col">Unit</th>
-                    <th scope = "col">Quantity</th>
                     <th scope = "col">Action</th>
                 </tr>
 
