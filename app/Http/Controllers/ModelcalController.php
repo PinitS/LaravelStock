@@ -14,7 +14,8 @@ class ModelcalController extends Controller
      */
     public function index()
     {
-        //
+        $Modelcals = Modelcal::all();
+        return view('Modelcal.create', ['Modelcals' => $Modelcals]);
     }
 
     /**
@@ -37,7 +38,26 @@ class ModelcalController extends Controller
      */
     public function store(Request $request)
     {
-        return $request;
+        //return $request;
+        $Modelcals = Modelcal::all();
+
+        foreach($Modelcals as $Modelcal)
+        {
+            if($Modelcal->modelName === $request->modelname)
+            {
+                $request->session()->flash('error' , 'Model already exists');
+                return redirect('Modelcal');
+            }
+        }
+
+        Modelcal::create([  
+                            'modelName'=> $request->modelname,
+                        ]);
+
+        $request->session()->flash('message' , 'Created Model Successfully');
+
+        $Modelcals = Modelcal::all();
+        return redirect('Modelcal');
         //
     }
 
@@ -47,8 +67,9 @@ class ModelcalController extends Controller
      * @param  \App\Modelcal  $modelcal
      * @return \Illuminate\Http\Response
      */
-    public function show(Modelcal $modelcal)
+    public function show($modelcal)
     {
+        return $modelcal;
         //
     }
 

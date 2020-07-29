@@ -22,25 +22,37 @@
 
         <div class = "row">
 
-        <input type="text"  class="form-control" name = "modelname" id="modelname" placeholder="Add Model" required="">
+            <div class="col-md-9 mb-3 my-2">
+                <input type="text"  class="form-control" name = "modelname" id="modelname" placeholder="Add Model" required="">
+            </div>
 
-        <button type="submit" class="btn btn-primary btn-block my-2" value="AddModel" id ="AddModel" name="AddModel">AddModel</button>
-        
+            <div class="col-md-3 mb-3">
+                <button type="submit" class="btn btn-primary btn-block my-2" value="AddModel" id ="AddModel" name="AddModel">AddModel</button>
+            </div>
+
         </div>
 
         <table class = "table">
-            <thead class = "thead-dark">
 
+            <thead class = "thead-dark">
                 <tr>
                     <th scope = "col">ModelName</th>
                     <th scope = "col">Action</th>
                 </tr>
-
             </thead>
 
             <tbody>
 
-            
+            @foreach($Modelcals as $Modelcal)
+                <tr>
+                
+                    <td> <a href="{{ action('ModelcalController@show', [$Modelcal->id]) }}">{{$Modelcal->modelName}} </a> </td>
+
+                    <td>####</td>
+
+                </tr>
+            @endforeach
+
 
             </tbody>
         

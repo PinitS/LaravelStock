@@ -69,6 +69,7 @@ class CategoryController extends Controller
      */
     public function show($category)
     {
+        return $category;
         $ProductCategory = Product::with('category')
                                     ->where('category_id' , $category)
                                     ->get();
