@@ -4,6 +4,8 @@
   <a class="my-0 mr-md-auto font-weight-normal text-white" href="{{ action('CategoryController@index') }}"><h5>Farm Thailand</h5></a>
 
   <nav class="my-2 my-md-0 mr-md-3">
+    <a class="p-2 text-white" href="{{ action('ModelcalController@create') }}">Models</a>
+    <a class="p-2 text-white" >||</a>
     <a class="p-2 text-white" href="{{ action('CategoryController@create') }}">AddCategory</a>
     <a class="p-2 text-white" href="{{ action('ProductController@create') }}">AddProduct</a>
     <a class="p-2 text-white" href="/search">SearchProduct</a>

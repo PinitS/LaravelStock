@@ -52,6 +52,7 @@ class ProductController extends Controller
      */
     public function store(Request $request)
     {
+        return $request;
         $Categories = Category::all();
 
         if($request->category_id > 0)
