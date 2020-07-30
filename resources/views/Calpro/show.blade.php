@@ -20,6 +20,22 @@
             
         @endif
         <input type="hidden"  class="form-control" name = "id" id="id" value = "{{$Model_id->id}}">
+
+
+        <div class="row">
+            <div class="col-md-4 order-md-1 mb-3 container">
+                <h3 style="color:#4d1919">Model : {{$Model_id->modelName}}</h3>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-4 order-md-1 mb-3 container">
+                <h5 style="color:#663399">Simulator : {{$SimCal->simcal}}</h5>
+            </div>
+        </div>
+
+
+
         <div class = "row">
 
             <div class="col-md-4 mb-3 my-2">

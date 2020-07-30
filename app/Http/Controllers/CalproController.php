@@ -61,6 +61,7 @@ class CalproController extends Controller
                                 'product_id'=> $request->pro_id,
                                 'calquantity'=> $request->quantity,
                                 'sumquantity'=> 0,
+                                'simcal'=> 0,
                             ]);
                 $request->session()->flash('message' , 'Add Product In Model Successfully');
                 return redirect()->action('CalproController@show', ['Calpro' => $request->id]);   
@@ -74,6 +75,7 @@ class CalproController extends Controller
                 Calpro::where('product_id' , $Update->product_id)
                         ->where('modelcal_id' , $request->id)
                         ->update([  
+                                    'simcal'=> $request->SimCal,
                                     'sumquantity' => ($Update->calquantity)* ($request->SimCal),
                                 ]);
             }
@@ -95,10 +97,11 @@ class CalproController extends Controller
         $Calpro = Calpro::with('product')
                         ->where('modelcal_id' , $calpro)
                         ->get();
-        $Model_id = Modelcal::where('id' , $calpro)
-                            ->first();
+        $Model_id = Modelcal::where('id' , $calpro)->first();
 
-        return view('Calpro.show', ['Product' => $Product , 'Calpro' => $Calpro , 'Model_id' => $Model_id]);
+        $SimCal = Calpro::where('modelcal_id' , $calpro)->first();
+
+        return view('Calpro.show', ['Product' => $Product , 'Calpro' => $Calpro , 'Model_id' => $Model_id , 'SimCal' => $SimCal]);
 
     }
 

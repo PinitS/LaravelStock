@@ -19,6 +19,7 @@ class CreateCalprosTable extends Migration
             $table->text('product_id');
             $table->integer('calquantity');
             $table->integer('sumquantity');
+            $table->integer('simcal');
             $table->timestamps();
         });
     }
