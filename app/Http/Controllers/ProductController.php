@@ -131,9 +131,6 @@ class ProductController extends Controller
      */
     public function update(Request $request, Product $product)
     {
-        ////////////////////////////////////////////////////////////////////////////////////////////////////////
-        // $reportQua = DB::table('product_tb')
-        //             ->where('id' , $request->id)->first();
 
         $reportQua = Product::where('id' , $request->id)->first();
         $ValReportQ = '';

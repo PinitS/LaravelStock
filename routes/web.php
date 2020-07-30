@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\Route;
 | contains the "web" middleware group. Now create something great!
 |
 */
+Route::resource('Calpro', 'CalproController');
 Route::resource('Modelcal', 'ModelcalController');
 Route::resource('Category', 'CategoryController');
 Route::resource('Product', 'ProductController');

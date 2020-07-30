@@ -46,7 +46,7 @@
             @foreach($Modelcals as $Modelcal)
                 <tr>
                 
-                    <td> <a href="{{ action('ModelcalController@show', [$Modelcal->id]) }}">{{$Modelcal->modelName}} </a> </td>
+                    <td> <a href="{{ action('CalproController@show', [$Modelcal->id]) }}">{{$Modelcal->modelName}} </a> </td>
 
                     <td>####</td>
 

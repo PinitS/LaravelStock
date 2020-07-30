@@ -19,7 +19,7 @@ class CreateProductsTable extends Migration
             $table->text('productName');
             $table->text('category_id');
             $table->text('unit');
-            $table->text('quantity');
+            $table->integer('quantity');
             $table->timestamps();
         });
     }
