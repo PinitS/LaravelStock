@@ -21,6 +21,8 @@ Route::get('/report' ,'OrderController@report');
 
 Route::get('/dashboard' ,'OrderController@dashboard');
 
+Route::get('/CheckSim' ,'CalproController@CheckSim');
+
 Route::get('/Calpro/{Pid}/{Mid}/' ,'CalproController@customedit')->name('Calpro.customedit');
 
 Route::get('/Calpro/{Pid}/{Mid}/delete' ,'CalproController@customdelete')->name('Calpro.customdelete');

@@ -70,7 +70,7 @@ class ModelcalController extends Controller
      */
     public function show($modelcal)
     {
-        return "SHow function";
+        
     }
 
     /**

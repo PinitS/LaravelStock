@@ -6,6 +6,7 @@ use App\Calpro;
 use App\Product;
 use App\Modelcal;
 use Illuminate\Http\Request;
+use DB;
 
 class CalproController extends Controller
 {
@@ -170,6 +171,23 @@ class CalproController extends Controller
      * @param  \App\Calpro  $calpro
      * @return \Illuminate\Http\Response
      */
+
+    public function CheckSim(Request $request)
+    {
+        //return view('Calpro.check', ['Product' => $Product , 'Calpro' => $Calpro , 'Model_id' => $Model_id , 'SimCal' => $SimCal]);
+
+        $check_sim = Calpro::with('product')
+                            ->select(
+                                        '*', DB::raw('Sum(sumquantity) AS SIM')
+                                    )
+
+                            ->groupBy('product_id')
+                            ->get();
+
+        return view('Calpro.check' ,['check_sim' => $check_sim]);
+
+    }
+
     public function destroy(Calpro $calpro)
     {
 
