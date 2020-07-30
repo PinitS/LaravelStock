@@ -172,6 +172,6 @@ class CalproController extends Controller
      */
     public function destroy(Calpro $calpro)
     {
-        //
+
     }
 }

@@ -48,7 +48,11 @@
                 
                     <td> <a href="{{ action('CalproController@show', [$Modelcal->id]) }}">{{$Modelcal->modelName}} </a> </td>
 
-                    <td>####</td>
+                    <td>    
+                        <a href="{{ route('Modelcal.customdelete', ['Mid'=> $Modelcal->id]) }}">
+                            <button type = "button" class = "btn btn-danger">Delete</button>
+                        </a>
+                    </td>
 
                 </tr>
             @endforeach

@@ -24,3 +24,5 @@ Route::get('/dashboard' ,'OrderController@dashboard');
 Route::get('/Calpro/{Pid}/{Mid}/' ,'CalproController@customedit')->name('Calpro.customedit');
 
 Route::get('/Calpro/{Pid}/{Mid}/delete' ,'CalproController@customdelete')->name('Calpro.customdelete');
+
+Route::get('/Modelcal/{Mid}/delete' ,'ModelcalController@customdelete')->name('Modelcal.customdelete');

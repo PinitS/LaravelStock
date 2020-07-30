@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Modelcal;
+use App\Calpro;
 use Illuminate\Http\Request;
 
 class ModelcalController extends Controller
@@ -69,7 +70,7 @@ class ModelcalController extends Controller
      */
     public function show($modelcal)
     {
-        return $modelcal;
+        return "SHow function";
     }
 
     /**
@@ -101,8 +102,23 @@ class ModelcalController extends Controller
      * @param  \App\Modelcal  $modelcal
      * @return \Illuminate\Http\Response
      */
+
+    public function customdelete($Mid)
+    {
+
+        $deleteModel = Modelcal::where('id' , $Mid);
+        $deleteModel->delete();
+
+        $deleteModelinCal = Calpro::where('modelcal_id' , $Mid);
+        $deleteModelinCal->delete();
+
+        session()->flash('message' , 'Delete Model Successfully');
+        return redirect('Category');
+
+    }
+
     public function destroy(Modelcal $modelcal)
     {
-        //
+
     }
 }
