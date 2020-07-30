@@ -92,8 +92,19 @@
                     <tr>
                         <td>{{$Cal->product->productName}}</td>
                         <td>{{$Cal->calquantity}}</td>
-                        <td>Edit</td>
-                        <td>Delete</td>
+
+                        <td>    
+                            <a href="{{ route('Calpro.customedit', ['Pid' => $Cal->product_id ,'Mid'=> $Model_id->id]) }}">
+                                <button type = "button" class = "btn btn-warning">Edit</button>
+                            </a>
+                        </td>
+
+                        <td>    
+                            <a href="{{ route('Calpro.customdelete', ['Pid' => $Cal->product_id ,'Mid'=> $Model_id->id]) }}">
+                                <button type = "button" class = "btn btn-danger">Delete</button>
+                            </a>
+                        </td>
+
                         <td>{{$Cal->sumquantity}}</td>
                     </tr>
                 @endforeach

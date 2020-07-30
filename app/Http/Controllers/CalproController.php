@@ -101,19 +101,47 @@ class CalproController extends Controller
 
         $SimCal = Calpro::where('modelcal_id' , $calpro)->first();
 
+        if($SimCal == null)
+        {
+            $SimCal = (object)['simcal' => '0'];      
+        }
+
         return view('Calpro.show', ['Product' => $Product , 'Calpro' => $Calpro , 'Model_id' => $Model_id , 'SimCal' => $SimCal]);
 
     }
 
     /**
      * Show the form for editing the specified resource.
-     *
      * @param  \App\Calpro  $calpro
      * @return \Illuminate\Http\Response
      */
-    public function edit(Calpro $calpro)
+    public function customedit($Pid , $Mid)
     {
-        //
+
+        $edit_id = Calpro::with('product')
+                            ->where('product_id' , $Pid)->first();
+
+        $Model_id = Modelcal::where('id' , $Mid)->first();
+
+        return view('Calpro.edit', ['edit_id' => $edit_id , 'Model_id' => $Model_id]);
+
+    }
+
+    public function customdelete($Pid , $Mid)
+    {
+
+        $edit_id = Calpro::where('modelcal_id' , $Mid)
+                        ->where('product_id' , $Pid);
+        $edit_id->delete();
+
+
+        return redirect()->action('CalproController@show', ['Calpro' => $Mid]);  
+
+    }
+
+    public function edit($calpro)
+    {
+
     }
 
     /**
@@ -123,9 +151,17 @@ class CalproController extends Controller
      * @param  \App\Calpro  $calpro
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Calpro $calpro)
+    public function update(Request $request, $calpro)
     {
-        //
+        Calpro::where('product_id' , $request->Pid)
+        ->where('modelcal_id' , $request->Mid)
+        ->update([  
+                    'calquantity'=> $request->newQuantity,
+                    'sumquantity' => 0,
+                ]);
+
+        $request->session()->flash('warning' , 'Successfully Update Quatity');
+        return redirect()->action('CalproController@show', ['Calpro' => $request->Mid]);  
     }
 
     /**

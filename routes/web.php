@@ -20,3 +20,7 @@ Route::get('/search' ,'ProductController@search');
 Route::get('/report' ,'OrderController@report');
 
 Route::get('/dashboard' ,'OrderController@dashboard');
+
+Route::get('/Calpro/{Pid}/{Mid}/' ,'CalproController@customedit')->name('Calpro.customedit');
+
+Route::get('/Calpro/{Pid}/{Mid}/delete' ,'CalproController@customdelete')->name('Calpro.customdelete');
