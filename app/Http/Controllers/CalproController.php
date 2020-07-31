@@ -120,7 +120,9 @@ class CalproController extends Controller
     {
 
         $edit_id = Calpro::with('product')
-                            ->where('product_id' , $Pid)->first();
+                            ->where('product_id' , $Pid)
+                            ->where('modelcal_id' , $Mid)
+                            ->first();
 
         $Model_id = Modelcal::where('id' , $Mid)->first();
 
