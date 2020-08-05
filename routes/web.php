@@ -33,3 +33,5 @@ Route::get('/Calpro/{Pid}/{Mid}/delete' ,'CalproController@customdelete')->name(
 Route::get('/Modelcal/{Mid}/delete' ,'ModelcalController@customdelete')->name('Modelcal.customdelete');
 
 Route::get('/Broadlocat/{Pid}/{Mid}/' ,'BroadlocatController@customshow')->name('Broadlocat.customshow');
+
+Route::get('/Broadlocat/{Bid}/delete/deleteBroad' ,'BroadlocatController@customdelete')->name('Broadlocat.customdelete');

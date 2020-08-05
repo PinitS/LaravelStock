@@ -46,8 +46,18 @@
                     <td> {{$Show->address}} </td>
                     <td> {{$Show->setupdate}} </td>
                     <td> <A href='http://{{$Show->map}}' target="_blank">{{$Show->map}}</A></td>
-                    <td>  </td>
-                    <td>  </td>
+
+                    <td>
+                        <a href="{{ action('BroadlocatController@edit', [$Show->id]) }}">
+                                <button type = "button" class = "btn btn-warning">Edit</button>
+                        </a>  
+                    </td>
+
+                    <td> 
+                        <a href="{{ route('Broadlocat.customdelete', ['Bid'=> $Show->id]) }}">
+                            <button type = "button" class = "btn btn-danger">Delete</button>
+                        </a> 
+                    </td>
 
                 </tr>
             @endforeach

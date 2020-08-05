@@ -16,7 +16,7 @@ class BroadlocatController extends Controller
      */
     public function index()
     {
-        //
+        return "delasdasdasdasete";
     }
 
     /**
@@ -83,18 +83,27 @@ class BroadlocatController extends Controller
      */
     public function show(Broadlocat $broadlocat)
     {
-        //
+        return "aaaaassss";
     }
 
     public function customshow($Pid , $Mid)
     {
-    
         $ShowBroads = Broadlocat::with('province')
                                 ->where('province_id' , $Pid)
                                 ->where('modellocat_id' , $Mid)
                                 ->get();
-                                
+
         return view('Broadlocat.show', ['ShowBroads' => $ShowBroads]);
+
+    }
+
+    public function customdelete($Bid)
+    {
+        $delete = Broadlocat::where('id' , $Bid);
+        $delete->delete();
+        
+        session()->flash('message' , 'Delete Broad Successfully');
+        return redirect('Category');
 
     }
 
@@ -104,9 +113,12 @@ class BroadlocatController extends Controller
      * @param  \App\Broadlocat  $broadlocat
      * @return \Illuminate\Http\Response
      */
-    public function edit(Broadlocat $broadlocat)
+    public function edit($broadlocat)
     {
-        //
+        $editvalue = Broadlocat::where('id' , $broadlocat)->first();
+        $Provinces = Province::all();
+        return view('Broadlocat.edit', ['editvalue' => $editvalue , 'Provinces' => $Provinces]); 
+
     }
 
     /**
@@ -118,7 +130,19 @@ class BroadlocatController extends Controller
      */
     public function update(Request $request, Broadlocat $broadlocat)
     {
-        //
+        Broadlocat::where('id' , $request->Bid)
+                    ->update([  
+                                'serialbroad'=> $request->serial_broad,
+                                'customername' => $request->customer_name,
+                                'setupdate'=> $request->date,
+                                'province_id' => $request->province,
+                                'address'=> $request->address,
+                                'map' => $request->maplink,
+                            ]);
+
+        $request->session()->flash('warning' , 'Successfully Update Broad');
+        return redirect('Category');
+
     }
 
     /**
@@ -129,6 +153,7 @@ class BroadlocatController extends Controller
      */
     public function destroy(Broadlocat $broadlocat)
     {
+ 
         //
     }
 }
