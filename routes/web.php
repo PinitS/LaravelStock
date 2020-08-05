@@ -14,6 +14,9 @@ use Illuminate\Support\Facades\Route;
 */
 Route::resource('Calpro', 'CalproController');
 Route::resource('Modelcal', 'ModelcalController');
+Route::resource('Modellocat', 'ModellocatController');
+Route::resource('Broadlocat', 'BroadlocatController');
+
 Route::resource('Category', 'CategoryController');
 Route::resource('Product', 'ProductController');
 Route::get('/search' ,'ProductController@search');
@@ -28,3 +31,5 @@ Route::get('/Calpro/{Pid}/{Mid}/' ,'CalproController@customedit')->name('Calpro.
 Route::get('/Calpro/{Pid}/{Mid}/delete' ,'CalproController@customdelete')->name('Calpro.customdelete');
 
 Route::get('/Modelcal/{Mid}/delete' ,'ModelcalController@customdelete')->name('Modelcal.customdelete');
+
+Route::get('/Broadlocat/{Pid}/{Mid}/' ,'BroadlocatController@customshow')->name('Broadlocat.customshow');

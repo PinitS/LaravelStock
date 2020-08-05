@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Modellocat;
+use App\Broadlocat;
+Use DB;
 use Illuminate\Http\Request;
 
 class ModellocatController extends Controller
@@ -24,6 +26,8 @@ class ModellocatController extends Controller
      */
     public function create()
     {
+        $Modellocate = Modellocat::withCount('broadlocat')->get();
+        return view('Modellocat.create', ['Modellocate' => $Modellocate]);
         //
     }
 
@@ -35,6 +39,23 @@ class ModellocatController extends Controller
      */
     public function store(Request $request)
     {
+        $Modellocate = Modellocat::all();
+
+        foreach($Modellocate as $Model)
+        {
+            if($Model->modellocatname === $request->modelname)
+            {
+                $request->session()->flash('error' , 'Model already exists');
+                return redirect()->action('ModellocatController@create');  
+            }
+        }
+
+        Modellocat::create([  
+                            'modellocatname'=> $request->modelname,
+                        ]);
+
+        $request->session()->flash('message' , 'Created Model Successfully');
+        return redirect()->action('ModellocatController@create');  
         //
     }
 
@@ -44,8 +65,17 @@ class ModellocatController extends Controller
      * @param  \App\Modellocat  $modellocat
      * @return \Illuminate\Http\Response
      */
-    public function show(Modellocat $modellocat)
+    public function show($modellocat)
     {
+        $Broadlocat = Broadlocat::with('province')
+                                ->with('modellocat')
+                                ->select(
+                                    '*', DB::raw('count(province_id) as Cntprovine')
+                                )
+                                ->where('modellocat_id',$modellocat)
+                                ->groupBy('province_id' ,'modellocat_id')
+                                ->get();
+        return view('Modellocat.show', ['Broadlocat' => $Broadlocat]);
         //
     }
 

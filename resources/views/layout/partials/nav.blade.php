@@ -54,9 +54,9 @@
             <li class="nav-item dropdown mr-2">
               <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">Location</a>
                 <div class="dropdown-menu dropdown-menu-center text-center">
-                  <a href="#" class="dropdown-item">AddModels</a>
+                  <a class="p-2 dropdown-item" href="{{ action('ModellocatController@create') }}">Models</a>
                   <div class="dropdown-divider"></div>
-                  <a href="#" class="dropdown-item">AddBroads</a>
+                  <a class="p-2 dropdown-item" href="{{ action('BroadlocatController@create') }}">AddBroads</a>
                   <div class="dropdown-divider"></div>
                   <a href="https://www.shorturl.at/" target="_blank" class="dropdown-item">ShortUrl</a>
                 </div>

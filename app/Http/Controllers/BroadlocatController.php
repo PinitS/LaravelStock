@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Broadlocat;
+use App\Modellocat;
+use App\Province;
 use Illuminate\Http\Request;
 
 class BroadlocatController extends Controller
@@ -24,6 +26,10 @@ class BroadlocatController extends Controller
      */
     public function create()
     {
+        $Modellocate = Modellocat::all();
+        $Provinces = Province::all();
+        
+        return view('Broadlocat.create', ['Modellocate' => $Modellocate , 'Provinces' => $Provinces]);
         //
     }
 
@@ -35,6 +41,37 @@ class BroadlocatController extends Controller
      */
     public function store(Request $request)
     {
+        $Modellocate = Modellocat::all();
+        $Provinces = Province::all();
+        $Broadlocat = Broadlocat::all();
+        if($request->model_id == 0 || $request->province == 0)
+        {
+            $request->session()->flash('warning' , 'Please Select Model Or Province!!');
+            return view('Broadlocat.create', ['Modellocate' => $Modellocate , 'Provinces' => $Provinces]);
+        }
+        else
+        {
+            foreach($Broadlocat as $Broad)
+            {
+                if($Broad->serialbroad === $request->serial_broad)
+                {
+                    $request->session()->flash('error' , 'Serialbroad already exists');
+                    return view('Broadlocat.create', ['Modellocate' => $Modellocate , 'Provinces' => $Provinces]); 
+                }
+            }
+            Broadlocat::create([  
+                                    'modellocat_id'=> $request->model_id,
+                                    'serialbroad'=> $request->serial_broad,
+                                    'customername'=> $request->customer_name,
+                                    'province_id'=> $request->province,
+                                    'address'=> $request->address,
+                                    'setupdate'=> $request->date,
+                                    'map'=> $request->maplink
+                                ]);
+            $request->session()->flash('message' , 'Add Broad Successfully');
+            return redirect()->action('ModellocatController@create');  
+        }
+        
         //
     }
 
@@ -47,6 +84,18 @@ class BroadlocatController extends Controller
     public function show(Broadlocat $broadlocat)
     {
         //
+    }
+
+    public function customshow($Pid , $Mid)
+    {
+    
+        $ShowBroads = Broadlocat::with('province')
+                                ->where('province_id' , $Pid)
+                                ->where('modellocat_id' , $Mid)
+                                ->get();
+                                
+        return view('Broadlocat.show', ['ShowBroads' => $ShowBroads]);
+
     }
 
     /**

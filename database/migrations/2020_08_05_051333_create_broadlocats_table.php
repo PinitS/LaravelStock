@@ -15,8 +15,8 @@ class CreateBroadlocatsTable extends Migration
     {
         Schema::create('broadlocats', function (Blueprint $table) {
             $table->id();
-            $table->text('modellocate_id');
-            $table->text('serialbrpad');
+            $table->text('modellocat_id');
+            $table->text('serialbroad');
             $table->text('customername');
             $table->text('province_id');
             $table->text('address');
