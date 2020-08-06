@@ -16,7 +16,7 @@ class BroadlocatController extends Controller
      */
     public function index()
     {
-        return "delasdasdasdasete";
+        
     }
 
     /**
@@ -83,7 +83,7 @@ class BroadlocatController extends Controller
      */
     public function show(Broadlocat $broadlocat)
     {
-        return "aaaaassss";
+        
     }
 
     public function customshow($Pid , $Mid)
