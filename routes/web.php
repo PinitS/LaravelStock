@@ -12,6 +12,10 @@ use Illuminate\Support\Facades\Route;
 | contains the "web" middleware group. Now create something great!
 |
 */
+Route::resource('Calpro', 'CalproController');
+Route::resource('Modelcal', 'ModelcalController');
+Route::resource('Modellocat', 'ModellocatController');
+Route::resource('Broadlocat', 'BroadlocatController');
 
 Route::resource('Category', 'CategoryController');
 Route::resource('Product', 'ProductController');
@@ -19,3 +23,15 @@ Route::get('/search' ,'ProductController@search');
 Route::get('/report' ,'OrderController@report');
 
 Route::get('/dashboard' ,'OrderController@dashboard');
+
+Route::get('/CheckSim' ,'CalproController@CheckSim');
+
+Route::get('/Calpro/{Pid}/{Mid}/' ,'CalproController@customedit')->name('Calpro.customedit');
+
+Route::get('/Calpro/{Pid}/{Mid}/delete' ,'CalproController@customdelete')->name('Calpro.customdelete');
+
+Route::get('/Modelcal/{Mid}/delete' ,'ModelcalController@customdelete')->name('Modelcal.customdelete');
+
+Route::get('/Broadlocat/{Pid}/{Mid}/' ,'BroadlocatController@customshow')->name('Broadlocat.customshow');
+
+Route::get('/Broadlocat/{Bid}/delete/deleteBroad' ,'BroadlocatController@customdelete')->name('Broadlocat.customdelete');
